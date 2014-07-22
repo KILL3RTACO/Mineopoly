@@ -16,6 +16,7 @@ public abstract class MineopolyMenu implements InventoryHolder {
 	protected Inventory inventory;
 	protected Action action;
 	protected String title;
+	protected int backIndex;
 	
 	public MineopolyMenu() {
 		this.player = null;
@@ -74,6 +75,13 @@ public abstract class MineopolyMenu implements InventoryHolder {
 	protected abstract Inventory createInventory();
 	
 	public abstract void action(MineopolyPlayer player, int cell);
+	
+	protected void addBackButton(Inventory inv){
+		ItemStack backButton = makeItem(Material.BEDROCK, "Back", "Go back to previous menu");
+		int back = inv.getSize() - 9;
+		inv.setItem(back, backButton);
+		backIndex = back;
+	}
 	
 	protected ItemStack makeItem(Material mat, String display, String... lore){
 		return makeItem(mat, 0, display, lore);

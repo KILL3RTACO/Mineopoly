@@ -19,23 +19,26 @@ public class MineopolyPropertiesMenu extends MineopolyMenu {
 	private int count = 0;
 	private OwnableSection[] sections;
 	private OwnableSection trading;
+	private MineopolyMenu parent;
 	
 	//player = the properties to view
 	
-	public MineopolyPropertiesMenu(MineopolyPlayer player, Action action, String title) {
+	public MineopolyPropertiesMenu(MineopolyPlayer player, Action action, String title, MineopolyMenu parent) {
 		super(player, action, title);
+		this.parent = parent;
 	}
 	
-	public MineopolyPropertiesMenu(MineopolyPlayer player, OwnableSection trading, Action action, String title) {
+	public MineopolyPropertiesMenu(MineopolyPlayer player, OwnableSection trading, Action action, String title, MineopolyMenu parent) {
 		super(player, action, title);
 		this.trading = trading;
+		this.parent = parent;
 	}
 
 	@Override
 	protected Inventory createInventory() {
 		sections = new OwnableSection[33];
 		MineopolyBoard board = Mineopoly.plugin.getGame().getBoard();
-		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 4 * 9, title);
+		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 6 * 9, title);
 		
 		addItem(board.getProperty(MineopolyColor.PURPLE, 0), inv);
 		addItem(board.getProperty(MineopolyColor.PURPLE, 1), inv);
@@ -68,6 +71,8 @@ public class MineopolyPropertiesMenu extends MineopolyMenu {
 		addItem(board.getRailroad(3), inv);
 		addItem(board.getProperty(MineopolyColor.BLUE, 0), inv);
 		addItem(board.getProperty(MineopolyColor.BLUE, 1), inv);
+		
+		addBackButton(inv);
 		
 		return inv;
 	}
@@ -127,6 +132,10 @@ public class MineopolyPropertiesMenu extends MineopolyMenu {
 	
 	@Override
 	public void action(MineopolyPlayer player, int cell) {
+		if(cell == backIndex){
+			player.showMenu(parent);
+			return;
+		}
 		OwnableSection section = sections[cell];
 		Player p = player.getPlayer();
 		if(action == Action.ADD_HOTEL){

@@ -1,17 +1,17 @@
 package com.kill3rtaco.mineopoly.game.sections;
 
 public enum SectionType {
-
-	CHANCE,
-	COMMUNITY_CHEST,
-	PROPERTY,
-	SQUARE,
-	RAILROAD,
-	TAX,
-	UTILITY;
 	
+	CHANCE, //3
+	COMMUNITY_CHEST, //3
+	PROPERTY, //22
+	SQUARE, //4
+	RAILROAD, //4 
+	TAX, //2
+	UTILITY; //2
 	
-	public String toString(){
+	@Override
+	public String toString() {
 		return this.name();
 	}
 }

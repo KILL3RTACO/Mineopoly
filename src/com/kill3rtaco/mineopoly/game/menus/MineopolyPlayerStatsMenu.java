@@ -10,13 +10,16 @@ import com.kill3rtaco.mineopoly.game.MineopolySection;
 
 public class MineopolyPlayerStatsMenu extends MineopolyMenu {
 
-	public MineopolyPlayerStatsMenu(MineopolyPlayer player){
+	private MineopolyMenu parent;
+	
+	public MineopolyPlayerStatsMenu(MineopolyPlayer player, MineopolyMenu parent){
 		super(player);
+		this.parent = parent;
 	}
 	
 	@Override
 	protected Inventory createInventory() {
-		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 9, player.getName() + "'s stats");
+		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 3 * 9, player.getName() + "'s stats");
 		
 		ItemStack bal = makeItem(Material.DIAMOND, "Balance", "This player's balance is " + player.getBalance());
 		inv.setItem(1, bal);
@@ -42,12 +45,16 @@ public class MineopolyPlayerStatsMenu extends MineopolyMenu {
 		ItemStack goojf = makeItem(Material.ITEM_FRAME, "Get Out of Jail Free Cards", "This player has " + cards + " card" + (cards == 1 ? "" : "s"));
 		inv.setItem(6, goojf);
 		
+		addBackButton(inv);
+		
 		return inv;
 	}
 
 	@Override
 	public void action(MineopolyPlayer player, int cell) {
-		//noting to do
+		if(cell == backIndex){
+			player.showMenu(parent);
+		}
 	}
 
 }

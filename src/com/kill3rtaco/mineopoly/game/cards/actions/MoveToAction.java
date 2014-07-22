@@ -6,17 +6,15 @@ import com.kill3rtaco.mineopoly.game.cards.CardResult;
 import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 
 public class MoveToAction extends MineopolyCardAction {
-
+	
 	public MoveToAction() {
 		super("moveto", "i");
 	}
-
+	
 	@Override
 	public CardResult doAction(MineopolyPlayer player, Object... params) {
-		if(params.length > 0 && params[0] instanceof Integer){
-			player.setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection((Integer) params[0]));
-		}
+		player.setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection((Integer) params[0]));
 		return CardResult.MOVE_RELATED;
 	}
-
+	
 }

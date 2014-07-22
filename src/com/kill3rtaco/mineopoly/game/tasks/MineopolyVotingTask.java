@@ -10,7 +10,7 @@ public class MineopolyVotingTask implements Runnable {
 		long now = System.currentTimeMillis();
 		MineopolyGame game = Mineopoly.plugin.getGame();
 		if(!game.pollsAreOpen()) return;
-		long timeLimit = Mineopoly.config.votingTimeLimit() * 1000;
+		long timeLimit = Mineopoly.options.votingTimeLimit() * 1000;
 		long end = game.getVoteStart() + timeLimit;
 		if(now >= end){
 			game.closePolls();

@@ -16,18 +16,20 @@ public class MineopolySellPropertyMenu extends MineopolyMenu {
 	private int count = 0;
 	private MineopolyPlayer with;
 	private OwnableSection selling;
+	private MineopolyMenu parent;
 	
-	public MineopolySellPropertyMenu(MineopolyPlayer seller, MineopolyPlayer with, OwnableSection selling) {
+	public MineopolySellPropertyMenu(MineopolyPlayer seller, MineopolyPlayer with, OwnableSection selling, MineopolyMenu parent) {
 		super(seller);
 		this.with = with;
 		this.selling = selling;
+		this.parent = parent;
 	}
 
 	@Override
 	protected Inventory createInventory() {
 		prices = new ArrayList<Integer>();
 		
-		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 3 * 9, "Select a price");
+		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 5 * 9, "Select a price");
 		
 		makeItem(0, inv); //who knows maybe someone wants to be nice
 		makeItem(1, inv);
@@ -65,10 +67,13 @@ public class MineopolySellPropertyMenu extends MineopolyMenu {
 
 	@Override
 	public void action(MineopolyPlayer player, int cell) {
+		if(cell == backIndex){
+			player.showMenu(parent);
+			return;
+		}
 		player.showMenu(null);
 		player.getPlayer().chat("/" + Mineopoly.getPAlias() + " sell " + selling.getId() + " " + with.getName() + " " + prices.get(cell));
 	}
-	
 	
 
 }

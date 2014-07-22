@@ -10,13 +10,16 @@ import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 
 public class MineopolyMonopoliesMenu extends MineopolyMenu {
 
-	public MineopolyMonopoliesMenu(MineopolyPlayer player){
+	private MineopolyMenu parent;
+	
+	public MineopolyMonopoliesMenu(MineopolyPlayer player, MineopolyMenu parent){
 		super(player);
+		this.parent = parent;
 	}
 	
 	@Override
 	protected Inventory createInventory() {
-		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 9, player.getName() + "'s monopolies");
+		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 9 * 3, player.getName() + "'s monopolies");
 		
 		int count = 0;
 		for(MineopolyColor c : MineopolyColor.values()){
@@ -27,12 +30,16 @@ public class MineopolyMonopoliesMenu extends MineopolyMenu {
 			count++;
 		}
 		
+		addBackButton(inv);
+		
 		return inv;
 	}
 
 	@Override
 	public void action(MineopolyPlayer player, int cell) {
-		//nothing to do
+		if(cell == backIndex){
+			player.showMenu(parent);
+		}
 	}
 
 }

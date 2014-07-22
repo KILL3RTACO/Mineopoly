@@ -11,13 +11,16 @@ import com.kill3rtaco.tacoapi.TacoAPI;
 
 public class MineopolyGameStatsMenu extends MineopolyMenu {
 
-	public MineopolyGameStatsMenu(){
+	private MineopolyMenu parent;
+	
+	public MineopolyGameStatsMenu(MineopolyMenu parent){
 		super();
+		this.parent = parent;
 	}
 	
 	@Override
 	protected Inventory createInventory() {
-		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 9, "Mineopoly Game Stats");
+		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 9 * 3, "Mineopoly Game Stats");
 		
 		MineopolyGame game = Mineopoly.plugin.getGame();
 		int count = 1;
@@ -41,12 +44,16 @@ public class MineopolyGameStatsMenu extends MineopolyMenu {
 		inv.setItem(count++, totalRR);
 		inv.setItem(count++, totalUtil);
 		
+		addBackButton(inv);
+		
 		return inv;
 	}
 
 	@Override
 	public void action(MineopolyPlayer player, int cell) {
-		//nothing to do
+		if(cell == backIndex){
+			player.showMenu(parent);
+		}
 	}
 
 	

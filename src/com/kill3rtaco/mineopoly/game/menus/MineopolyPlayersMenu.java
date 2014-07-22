@@ -16,9 +16,11 @@ public class MineopolyPlayersMenu extends MineopolyMenu {
 
 	private ArrayList<MineopolyPlayer> players;
 	private OwnableSection trading;
+	private MineopolyMenu parent;
 	
-	public MineopolyPlayersMenu(Action action){
+	public MineopolyPlayersMenu(Action action, MineopolyMenu parent){
 		super(action);
+		this.parent = parent;
 	}
 	
 	public MineopolyPlayersMenu(MineopolyPlayer player, Action action, String title) {
@@ -85,7 +87,7 @@ public class MineopolyPlayersMenu extends MineopolyMenu {
 		});
 		int size = players.size() / 9;
 		if(players.size() % 9 > 0) size++;
-		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, size * 9, title);
+		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, (size + 2) * 9, title);
 		
 		int index = 0;
 		for(MineopolyPlayer mp : players){
@@ -93,25 +95,31 @@ public class MineopolyPlayersMenu extends MineopolyMenu {
 			inv.setItem(index++, head);
 		}
 		
+		addBackButton(inv);
+		
 		return inv;
 	}
 
 	@Override
 	public void action(MineopolyPlayer player, int cell) {
+		if(cell == backIndex){
+			player.showMenu(parent);
+			return;
+		}
 		if(cell >= 0 && cell < players.size()){
 			MineopolyPlayer p = players.get(cell);
 			if(action == Action.VIEW_INFO){
-				player.showMenu(new MineopolyPlayerStatsMenu(p));
+				player.showMenu(new MineopolyPlayerStatsMenu(p, this));
 			}else if(action == Action.VIEW_MONOPOLIES){
-				player.showMenu(new MineopolyMonopoliesMenu(p));
+				player.showMenu(new MineopolyMonopoliesMenu(p, this));
 			}else if(action == Action.VIEW_PROPERTIES){
-				player.showMenu(new MineopolyPropertiesMenu(p, action, p.getName() + "'s properties"));
+				player.showMenu(new MineopolyPropertiesMenu(p, action, p.getName() + "'s properties", this));
 			}else if(action == Action.SELL_PROPERTY){
-				player.showMenu(new MineopolySellPropertyMenu(player, p, trading));
+				player.showMenu(new MineopolySellPropertyMenu(player, p, trading, this));
 			}else if(action == Action.TRADE_PROPERTY){
 				//player = player initiating trade
 				//p = player who 'player' wants to trade with
-				player.showMenu(new MineopolyPropertiesMenu(p, trading, action, "Select the property you want"));
+				player.showMenu(new MineopolyPropertiesMenu(p, trading, action, "Select the property you want", this));
 			}else if(action == Action.ACCEPT_TRADE){
 				player.showMenu(null);
 				player.getPlayer().chat("/" + Mineopoly.getTAlias() + " accept " + p.getName());

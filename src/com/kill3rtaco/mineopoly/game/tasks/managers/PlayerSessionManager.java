@@ -23,7 +23,7 @@ public class PlayerSessionManager {
 	}
 	
 	public static boolean canReturn(String name){
-		double minutes = Mineopoly.config.sessionTimeout();
+		double minutes = Mineopoly.options.sessionTimeout();
 		double timeNeeded = 1000 * (60 * minutes);
 		Long time = players.get(name);
 		if(time == null) return true;

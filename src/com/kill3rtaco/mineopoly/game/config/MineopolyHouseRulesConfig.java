@@ -2,6 +2,8 @@ package com.kill3rtaco.mineopoly.game.config;
 
 import java.io.File;
 
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import com.kill3rtaco.mineopoly.Mineopoly;
 import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.tacoapi.api.TacoConfig;
@@ -9,7 +11,7 @@ import com.kill3rtaco.tacoapi.api.TacoConfig;
 public class MineopolyHouseRulesConfig extends TacoConfig {
 
 	public MineopolyHouseRulesConfig() {
-		super(new File(Mineopoly.plugin.getDataFolder() + "/config/house-rules.yml"));
+		super(new File(Mineopoly.plugin.getDataFolder() + "/config/" + Mineopoly.config.getConfigName() + "/house-rules.yml"));
 	}
 
 	@Override
@@ -85,6 +87,12 @@ public class MineopolyHouseRulesConfig extends TacoConfig {
 	
 	public boolean travelingRailroads(){
 		return getBoolean(MineopolyConstants.HR_TRAVELING_RAILROADS);
+	}
+	
+	public void reload(){
+		config = YamlConfiguration.loadConfiguration(new File(Mineopoly.plugin.getDataFolder() + "/config/" + Mineopoly.config.getConfigName() + "/house-rules.yml"));
+		setDefaults();
+		save();
 	}
 
 }
